@@ -6,17 +6,18 @@ public class Recarga {
     private float valor;
 
     public Recarga(GregorianCalendar data, float valor) {
-        
+        this.data = data;
+        this.valor = valor;
     }
     public GregorianCalendar getData() {
-        return null;
+        return this.data;
     }
     public float getValor() {
-        return 0;
+        return this.valor;
     }
 
     @Override
     public String toString() {
-        return null;
+        return "A recarga foi feita em "+this.data+" no valor de "+this.valor;
     }
 }
