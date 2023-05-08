@@ -6,19 +6,20 @@ public class Chamada {
     private int duracao;
 
     public Chamada(GregorianCalendar data, int duracao) {
-        
+        this.data = data;
+        this.duracao = duracao;
     }
 
     public GregorianCalendar getData() {
-        return null;
+        return this.data;
     }
     public int getDuracao() {
-        return 0;
+        return this.duracao;
     }
 
     @Override
     public String toString() {
-        return null;
+        return "A chamada foi feita em "+this.data.getTime()+"\ncom duração de "+this.duracao+" Minutes";
     }
 
 }
