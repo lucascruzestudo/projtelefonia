@@ -15,7 +15,15 @@ public Assinante (long cpf, String nome, int numero)
 
 }
 
-
+public long getCpf() {
+    return this.cpf;
+}
+@Override
+public String toString() {
+    return
+            "  Cpf: "+this.cpf+"\n" +
+            "  Nome: " +this.nome+"\n" +
+            "  Numero: "+this.nummero;
 }
     
-}
+
