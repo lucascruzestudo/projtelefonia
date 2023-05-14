@@ -11,12 +11,15 @@ public class Telefonia {
     private PrePago[] prePago;
     private PosPago[] posPago;
 
-    public Telefonia() {
+    public Telefonia() 
+    {
         this.posPago = new PosPago[5];
         this.prePago = new PrePago[5];
     }
 
-    public void cadastrarAssinante() {
+    // Finalizar
+    public void cadastrarAssinante() 
+    {
         GerenciadorEntrada gerenciadorEntrada = GerenciadorEntrada.getInstancia();
         EnumClassificacaoAssinantes tipoAssinante = gerenciadorEntrada.solicitarTipoAssinante();
 
@@ -27,7 +30,8 @@ public class Telefonia {
         //assinante específico 
     }
 
-    public void fazerChamada() {
+    public void fazerChamada() 
+    {
         Scanner scanner = new Scanner(System.in);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         GregorianCalendar dataHora = new GregorianCalendar();
@@ -76,7 +80,8 @@ public class Telefonia {
 
     }
 
-    public void fazerRecarga() {
+    public void fazerRecarga() 
+    {
         Scanner scanner = new Scanner(System.in);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         GregorianCalendar dataHora = new GregorianCalendar();
@@ -114,5 +119,61 @@ public class Telefonia {
         scanner.close()
     }
 
+    public void imprimirFaturas() 
+    {
+        Scanner scanner = new Scanner(System.in);
+        int mesSelected = null;
+        EnumMonth mes = null;
+
+        do {
+            boolean entradaValida = false;
+
+            System.out.println("Digite o nome do mes: ");
+            String input = scanner.nextLine().toUpperCase();
+
+            try {
+                mes = EnumMonth.valueOf(input);
+                entradaValida = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Valor inválido.\n");
+            }
+        } while (!entradaValida && !mes);
+
+        mesSelected = mes.ordinal();
+
+        System.out.println("\nFATURAS DE TODOS OS POSPAGOS...");
+        for (PosPago pos: this.posPago) {
+            if (pos == null) break;
+            pos.imprimirFaturas(mesSelected);
+        }
+
+        System.out.println("\nFATURAS DE TODOS OS PREPAGOS...");
+        for (PrePago pre: this.prePago) {
+            if (pre == null)   break;
+            pre.imprimirFaturas(mesSelected);
+        }
+
+        scanner.close();
+
+    }
+
+    // A Fazer
+    public void listarAssinante() {}
+
+    // A Fazer
+    public void sairDoPrograma() {}
+
+    // A Fazer
+    private PrePago localizarPrePago(long cpf) {}
+
+    // A Fazer
+    private PosPago localizarPosPago(long cpf) {}
+
+    // A Fazer
+    public static void main(String[] args) {
+        System.out.println("Welcome The Telefonia");
+        
+        //Menu Code...
+    }
 
 }
