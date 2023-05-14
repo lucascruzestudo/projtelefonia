@@ -24,4 +24,28 @@ public class PosPago extends Assinante
         this.assinatura += (1.04) * duracao;
         this.numChamadas++;
     }
+
+    public void imprimirFaturas(int mes) 
+    {
+        float valorTotalChamdas = 0f;
+        System.out.println("===============================");
+
+        System.out.println("Dados Pessoais...");
+        System.out.println(this.toString());
+
+        System.out.print("\nChamadas...");
+        for (int i = 0; i < this.numChamadas; i++) {
+            if (mes == this.chamadas[i].getData().get(Calendar.MONTH)) {
+                System.out.println("\n Chamada["+i+"]: " + this.chamadas[i].toString());
+                System.out.println("  valorChamada: " + this.chamadas[i].getDuracao() * 1.04);
+            } else {
+                System.out.println("  Nenhuma...");
+            }
+        }
+
+        System.out.println(" Total gasto em chamadas: " + valorTotalChamdas);
+        System.out.print("\n Valor final da assinatura: " +  this.assinatura);
+
+        System.out.println("\n");
+    }
 }
