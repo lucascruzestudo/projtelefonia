@@ -1,29 +1,31 @@
 public class Assinante {
- private long cpf; 
- private String nome;
-private int numero; 
-protected int numChamada = 0; 
+    private long cpf;
+    private String nome;
+    private int nummero;
 
-protected Chamada [] chamada; 
+    protected int numChamadas;
+    protected Chamada[] chamadas;
 
-public Assinante (long cpf, String nome, int numero)
-{
-    this.cpf = cpf;
-        this.nome = nome;
-        this.nummero = numero;
-        this.chamadas = new Chamada[5];
+    public Assinante (long cpf, String nome, int numero)
+    {
+        this.cpf = cpf;
+            this.nome = nome;
+            this.nummero = numero;
+            this.numChamadas = 0;
+            this.chamadas = new Chamada[5];
+    }
 
-}
-
-public long getCpf() {
-    return this.cpf;
-}
-@Override
-public String toString() {
-    return
-            "  Cpf: "+this.cpf+"\n" +
-            "  Nome: " +this.nome+"\n" +
-            "  Numero: "+this.nummero;
-}
+    public long getCpf() {
+        return this.cpf;
+    }
     
+    @Override
+    public String toString() 
+    {
+        return
+                "  Cpf: "+this.cpf+"\n" +
+                "  Nome: " +this.nome+"\n" +
+                "  Numero: "+this.nummero;
+    }
+}
 
