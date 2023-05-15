@@ -1,9 +1,45 @@
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+
+// fazer construtor
+
 public class PrePago extends Assinante {
+    private float creditos = 0f;
+    private int numRecargas = 0;
+    private Recarga[] recargas;
+
     
     
+    public void fazerRecarga(GregorianCalendar data, float valor) {
+        if (this.numRecargas >= this.recargas.length) {
+            System.out.println("Assinannte com limite de recarga.");
+            return;
+        }
+        this.recargas[this.numRecargas] = new Recarga(data, valor);
+        this.creditos += valor;
+        this.numRecargas++;
+    }
+
+    public Float fazerChamada(GregorianCalendar data, int duracao) {
+
+        if (this.numChamadas >= this.chamadas.length) {
+            System.out.println("Assinante com limite de chamadas.\n");
+            return null;
+        }
+
+        if (this.creditos < (1.45 * duracao)) {
+            System.out.println("Assinante nao possui creditos para completar a chamadas.");
+            System.out.printf("Credito restate do assinante: %.2f\n", this.creditos);
+            System.out.printf("Credito necessarrio para completa a chamada: %.2f\n\n", (1.45 * duracao));
+            return null;
+        }
+        this.chamadas[this.numChamadas] = new Chamada(data, duracao);
+        this.creditos -= (1.45) * duracao;
+        this.numChamadas++;
+
+        return creditos;
+    }
     
     public void imprimirFaturas(int mes) {
         float valorTotalChamdas = 0f;
@@ -39,5 +75,6 @@ public class PrePago extends Assinante {
         }
 
         System.out.println("\n Total gasto em recarga: "+valorTotalRecargas+" \n");
+
     }
 }
