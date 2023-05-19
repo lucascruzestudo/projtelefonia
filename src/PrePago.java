@@ -14,7 +14,7 @@ public class PrePago extends Assinante {
     
     public void fazerRecarga(GregorianCalendar data, float valor) {
         if (this.numRecargas >= this.recargas.length) {
-            System.out.println("Assinannte com limite de recarga.");
+            System.out.println("Assinante com limite de recarga.");
             return;
         }
         this.recargas[this.numRecargas] = new Recarga(data, valor);
@@ -30,9 +30,9 @@ public class PrePago extends Assinante {
         }
 
         if (this.creditos < (1.45 * duracao)) {
-            System.out.println("Assinante nao possui creditos para completar a chamadas.");
-            System.out.printf("Credito restate do assinante: %.2f\n", this.creditos);
-            System.out.printf("Credito necessarrio para completa a chamada: %.2f\n\n", (1.45 * duracao));
+            System.out.println("Assinante nao possui creditos para completar a chamada.");
+            System.out.printf("Credito restante do assinante: %.2f\n", this.creditos);
+            System.out.printf("Credito necessario para completar a chamada: %.2f\n\n", (1.45 * duracao));
             return null;
         }
         this.chamadas[this.numChamadas] = new Chamada(data, duracao);
