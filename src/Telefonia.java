@@ -169,11 +169,10 @@ public class Telefonia {
     // A Fazer
     private PosPago localizarPosPago(long cpf) {}
 
-    // A Fazer
     public static void main(String[] args) {
-        System.out.println("Welcome The Telefonia");
-        
-        //Menu Code...
+        System.out.println("Seja bem-vindo a Telefonia")
+        Menu menu = new Menu();
+        menu.exibirMenu();
     }
 
 }
