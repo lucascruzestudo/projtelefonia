@@ -2,14 +2,15 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
-// fazer construtor
-
 public class PrePago extends Assinante {
     private float creditos = 0f;
     private int numRecargas = 0;
     private Recarga[] recargas;
 
-    
+      public PrePago(long cpf, String nome, int numero) {
+        super(cpf, nome, numero);
+        this.recargas = new Recarga[5];
+    }
     
     public void fazerRecarga(GregorianCalendar data, float valor) {
         if (this.numRecargas >= this.recargas.length) {
