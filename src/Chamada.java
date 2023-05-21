@@ -18,7 +18,7 @@ public class Chamada {
 
     @Override
     public String toString() {
-        return "A chamada foi feita em "+this.data.getTime()+"\ncom duração de "+this.duracao+" Minutos";
+        return "A chamada foi feita em "+this.data.getTime()+"\n com duração de "+this.duracao+" Minutos";
     }
 
 }

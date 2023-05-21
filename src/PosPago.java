@@ -24,24 +24,30 @@ public class PosPago extends Assinante
 
     public void imprimirFaturas(int mes) {
         float valorTotalChamdas = 0f;
-        System.out.println("===============================");
-
-        System.out.println("Dados Pessoais...");
-        System.out.println(this.toString());
+        boolean achouChamada = false;
 
         System.out.print("\nChamadas...");
         for (int i = 0; i < this.numChamadas; i++) {
             if (mes == this.chamadas[i].getData().get(Calendar.MONTH)) {
-                custo = (float) (this.chamadas[i].getDuracao() * 1.04);
+                if (!achouChamada) {
+                    System.out.println("===============================");
+                    System.out.println("Dados Pessoais...");
+                    System.out.println(this.toString());
+                }
+
+                float custo = (float) (this.chamadas[i].getDuracao() * 1.04);
                 System.out.println("\n Chamada["+i+"]: " + this.chamadas[i].toString());
-                System.out.println("  valorChamada: " + custo);
+                System.out.println(" valorChamada: " + custo);
                 valorTotalChamdas += custo;
+                achouChamada = true;
             }
         }
 
-        System.out.println(" Total gasto em chamadas: " + valorTotalChamdas);
-        System.out.print("\n Valor final da assinatura: " +  (this.assinatura + valorTotalChamdas));
-
+        if (achouChamada) {
+            System.out.println(" Total gasto em chamadas: " + valorTotalChamdas);
+            System.out.println(" Valor da assinatura: " + this.assinatura);
+            System.out.print("\n Valor final da assinatura: " + (this.assinatura + valorTotalChamdas));
+        }
         System.out.println("\n");
     }
 }

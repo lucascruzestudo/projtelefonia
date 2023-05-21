@@ -41,5 +41,5 @@
     [X] sairDoPrograma
     [X] localizarPrePago
     [X] localizarPosPago
-    [] main/Menu
+    [x] main/Menu
 

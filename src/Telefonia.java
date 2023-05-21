@@ -11,12 +11,12 @@ public class Telefonia {
     private PrePago[] prePago;
     private PosPago[] posPago;
 
-    private Scanner scanner;
+    private static Scanner scanner;
 
     public Telefonia() {
         this.posPago = new PosPago[5];
         this.prePago = new PrePago[5];
-        this.scanner = new Scanner(System.in)
+        this.scanner = new Scanner(System.in);
     }
 
     public void cadastrarAssinante() {
@@ -24,9 +24,9 @@ public class Telefonia {
         boolean se_pospago = false;
         boolean se_prepago = false;
         Long cpfAssinante = null;
-        int telefone = null;
-        String nome = null;
-        float assinatura = null;
+        int telefone;
+        String nome;
+        float assinatura;
         boolean se_tipoAssinanteValido = false;
 
         while (!se_tipoAssinanteValido) {
@@ -58,6 +58,7 @@ public class Telefonia {
         while (cpfAssinante == null) {
             System.out.println("Digite o CPF do assinante: ");
             cpfAssinante = scanner.nextLong();
+            scanner.nextLine();
             PosPago assinante_pos = localizarPosPago(cpfAssinante);
             PrePago assinante_pre = localizarPrePago(cpfAssinante);
 
@@ -72,7 +73,7 @@ public class Telefonia {
         System.out.println("Digite o nome do assinante: ");
         nome = scanner.nextLine();
         System.out.println("Digite o telefone do assinante: ");
-        telefone = scanner.nextLine();
+        telefone = scanner.nextInt();
 
         if (se_pospago) {
             System.out.println("Digite o valor da assinatura do Pospago: ");
@@ -99,6 +100,7 @@ public class Telefonia {
         
         System.out.println("Digite o CPF do assinante: ");
         cpfAssinante = scanner.nextLong();
+        scanner.nextLine();
 
         assinante_pos = localizarPosPago(cpfAssinante);
         assinante_pre = localizarPrePago(cpfAssinante);
@@ -109,8 +111,8 @@ public class Telefonia {
         }
 
         do {
-            System.out.println("Digite a data (formato dd/MM/yyyy HH:mm:ss");
-            String dataHoraStr = scanner.next();
+            System.out.println("Digite a data (formato dd/MM/yyyy HH:mm:ss): ");
+            String dataHoraStr = scanner.nextLine();
 
             System.out.println("Digite a duracao da chamada em minutos: ");
             duracao = scanner.nextInt();
@@ -124,11 +126,11 @@ public class Telefonia {
             }
         } while(dataHora == null || duracao < 1);
 
-        if (assinante_pre) {
+        if (assinante_pre != null) {
             assinante_pre.fazerChamada(dataHora, duracao);
         }
 
-        if (assinante_pos) {
+        if (assinante_pos != null) {
             assinante_pos.fazerChamada(dataHora, duracao);
         }
 
@@ -137,32 +139,35 @@ public class Telefonia {
     public void fazerRecarga() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         GregorianCalendar dataHora = new GregorianCalendar();
-        PrePago assinante_pre = null;
-        Long cpfAssinante = null;
+        PrePago assinante_pre;
+        Long cpfAssinante;
         float valor = 0f;
 
         System.out.println("Digite o CPF do assinante: ");
         cpfAssinante = scanner.nextLong();
+        scanner.nextLine();
 
         assinante_pre = localizarPrePago(cpfAssinante);
 
         if (assinante_pre != null) {
             do {
-                System.out.println("Digite a data (formato dd/MM/yyyy HH:mm:ss");
-                String dataHoraStr = scanner.next();
+                System.out.println("Digite a data (formato dd/MM/yyyy HH:mm:ss): ");
+                String dataHoraStr = scanner.nextLine();
+
+                System.out.println("Digite o valor da recarga: ");
+                valor = scanner.nextFloat();
+
                 try {
                     Date dataHoraDate = sdf.parse(dataHoraStr);
                     dataHora.setTime(dataHoraDate);
-
-                    System.out.println("Digite o valor da recarga: ");
-                    valor = scanner.nextFloat();
                 } catch (ParseException e) {
-                    System.out.println("Data ou valor de recarga inválida");
+                    System.out.println("\nData ou valor da recarga inválida\n");
+                    scanner.nextLine();
                     dataHora = null;
                 }
-            } while(dataHora == null && valor <= 0);
+            } while(dataHora == null || valor <= 0);
 
-            assinante_pre.recarregar(dataHora, valor);
+           assinante_pre.recarregar(dataHora, valor);
 
         } else {
             System.out.println("Assinante prepago Não localizado...\n");
@@ -171,7 +176,7 @@ public class Telefonia {
     }
 
     public void imprimirFaturas() {
-        int mesSelecionado = null;
+        int mesSelecionado;
         boolean entradaValida = false;
         EnumMeses mes = null;
 
@@ -207,12 +212,12 @@ public class Telefonia {
         System.out.println("\nTODOS OS POSPAGOS...\n");
         for (PosPago pos: this.posPago) {
             if (pos == null) break;
-            System.out.println(pos.toString());
+            System.out.println(pos.toString() + "\n");
         }
         System.out.println("\nTODOS OS PREPAGOS..\n");
         for (PrePago pre: this.prePago) {
             if (pre == null) break;
-            System.out.println(pre.toString());
+            System.out.println(pre.toString() + "\n");
         }
         }
 
@@ -249,8 +254,56 @@ public class Telefonia {
 
     public static void main(String[] args) {
         System.out.println("Seja bem-vindo a Telefonia");
-        Menu menu = new Menu();
-        menu.exibirMenu();
+
+        Telefonia telefonia = new Telefonia();
+        int opcao = 0;
+        boolean exibirOpcoes = true;
+
+        do {
+            if (exibirOpcoes) {
+                System.out.println("\n\n(1) Cadastrar assinante.");
+                System.out.println("(2) Listar assinantes.");
+                System.out.println("(3) Fazer chamada.");
+                System.out.println("(4) Fazer recarga.");
+                System.out.println("(5) Imprimir faturas.");
+                System.out.println("(6) Sair do programa.");
+            }
+            exibirOpcoes = true;
+            System.out.print("\nDigite sua opção: ");
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    System.out.println("Cadastrar assinante...");
+                    telefonia.cadastrarAssinante();
+                    break;
+                case 2:
+                    System.out.println("Listar assinantes...");
+                    telefonia.listarAssinante();
+                    break;
+                case 3:
+                    System.out.println("Fazer chamada...");
+                    telefonia.fazerChamada();
+                    break;
+                case 4:
+                    System.out.println("Fazer recarga...");
+                    telefonia.fazerRecarga();
+                    break;
+                case 5:
+                    System.out.println("Imprimir faturas...");
+                    telefonia.imprimirFaturas();
+                    break;
+                case 6:
+                    System.out.println("Sair do programa...");
+                    telefonia.sairDoPrograma();
+                    break;
+                default:
+                    exibirOpcoes = false;
+                    System.out.println("Opção inválida...");
+            }
+
+        } while(opcao != 6);
     }
 
 }
