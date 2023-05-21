@@ -7,9 +7,9 @@
     [x] toString
 
 [] PrePago
-    [] PrePago
-    [] fazerChamada
-    [] fazerRecarga
+    [X] PrePago
+    [X] fazerChamada
+    [X] fazerRecarga
     [x] imprimirFaturas
 
 [x] PosPago
@@ -33,13 +33,13 @@
 [x] EnumMeses
 
 [] Telefonia
-    [] cadastrarAssinante
+    [X] cadastrarAssinante
     [x] fazerChamada
     [x] fazerRecarga
     [x] imprimirFaturas
-    [] listarAssinante
-    [] sairDoPrograma
-    [] localizarPrePago
-    [] localizarPosPago
+    [X] listarAssinante
+    [X] sairDoPrograma
+    [X] localizarPrePago
+    [X] localizarPosPago
     [] main/Menu
 
