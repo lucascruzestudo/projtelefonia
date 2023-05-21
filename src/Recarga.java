@@ -17,6 +17,6 @@ public class Recarga {
 
     @Override
     public String toString() {
-        return "A recarga foi feita em "+this.data+" no valor de "+this.valor;
+        return "A recarga foi feita em "+this.data.getTime()+" no valor de "+this.valor;
     }
 }

@@ -12,7 +12,7 @@ public class PrePago extends Assinante {
         this.recargas = new Recarga[5];
     }
     
-    public void fazerRecarga(GregorianCalendar data, float valor) {
+    public void recarregar(GregorianCalendar data, float valor) {
         if (this.numRecargas >= this.recargas.length) {
             System.out.println("Assinante com limite de recarga.");
             return;
@@ -35,15 +35,16 @@ public class PrePago extends Assinante {
             System.out.printf("Credito necessario para completar a chamada: %.2f\n\n", (1.45 * duracao));
             return null;
         }
+
         this.chamadas[this.numChamadas] = new Chamada(data, duracao);
-        this.creditos -= (1.45) * duracao;
+        this.creditos -= (1.45 * duracao);
         this.numChamadas++;
 
         return creditos;
     }
     
     public void imprimirFaturas(int mes) {
-        float valorTotalChamdas = 0f;
+        float valorTotalChamadas = 0f;
         float valorTotalRecargas = 0f;
         System.out.println("===============================");
 
@@ -54,24 +55,21 @@ public class PrePago extends Assinante {
         for (int i = 0; i < this.numChamadas; i++) {
             if (mes == this.chamadas[i].getData().get(Calendar.MONTH)) {
                 System.out.println("\n Chamada["+i+"]: " + this.chamadas[i].toString());
-                float _valorTotalChamdas = (float)(this.chamadas[i].getDuracao() * 1.45);
-                System.out.println("  valorChamada:" + _valorTotalChamdas);
-                valorTotalChamdas += _valorTotalChamdas;
-            } else {
-                System.out.print("  Nenhuma...");
+                float _valorTotalChamadas = (float)(this.chamadas[i].getDuracao() * 1.45);
+                System.out.println("  Valor das chamada:" + _valorTotalChamadas);
+                valorTotalChamadas += _valorTotalChamadas;
             }
         }
 
-        System.out.println(" Total gasto em chamadas: "+valorTotalChamdas+" \n");
+        System.out.println(" Total gasto em chamadas: "+valorTotalChamadas+" \n");
 
         System.out.print("\nRecarrega...");
         for (int i = 0; i < this.numRecargas; i++) {
             if (mes == this.recargas[i].getData().get(Calendar.MONTH)) {
                 System.out.println("\n Recarga["+i+"]: " + this.recargas[i].toString());
-                float _valorTotalRecargas = this.recargas[i].getValor();
-                valorTotalRecargas += _valorTotalRecargas;
-            } else {
-                System.out.print("  Nenhuma...");
+                float _valorRecarga = this.recargas[i].getValor();
+                System.out.println("  Valor da recarga:" + _valorRecarga);
+                valorTotalRecargas += _valorRecarga;
             }
         }
 

@@ -11,15 +11,16 @@ public class Telefonia {
     private PrePago[] prePago;
     private PosPago[] posPago;
 
-    public Telefonia() 
-    {
+    private Scanner scanner;
+
+    public Telefonia() {
         this.posPago = new PosPago[5];
         this.prePago = new PrePago[5];
+        this.scanner = new Scanner(System.in)
     }
 
     // Finalizar
-    public void cadastrarAssinante() 
-    {
+    public void cadastrarAssinante() {
         GerenciadorEntrada gerenciadorEntrada = GerenciadorEntrada.getInstancia();
         EnumClassificacaoAssinantes tipoAssinante = gerenciadorEntrada.solicitarTipoAssinante();
 
@@ -30,9 +31,7 @@ public class Telefonia {
         //assinante específico 
     }
 
-    public void fazerChamada() 
-    {
-        Scanner scanner = new Scanner(System.in);
+    public void fazerChamada() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         GregorianCalendar dataHora = new GregorianCalendar();
         PosPago assinante_pos = null;
@@ -48,13 +47,16 @@ public class Telefonia {
 
         if (assinante_pre == null && assinante_pos == null) {
             System.out.println("Assinante Não localizado...\n");
-            scanner.close();
             return;
         }
 
         do {
             System.out.println("Digite a data (formato dd/MM/yyyy HH:mm:ss");
             String dataHoraStr = scanner.next();
+
+            System.out.println("Digite a duracao da chamada em minutos: ");
+            duracao = scanner.nextInt();
+
             try {
                 Date dataHoraDate = sdf.parse(dataHoraStr);
                 dataHora.setTime(dataHoraDate);
@@ -62,27 +64,19 @@ public class Telefonia {
                 System.out.println("Data inválida");
                 dataHora = null;
             }
-        } while(dataHora == null);
+        } while(dataHora == null || duracao < 1);
 
- 
-        System.out.println("Digite a duracao da chamada em minutos: ");
-        duracao = scanner.nextInt();
-
-        if (assinante_pre != null) {
+        if (assinante_pre) {
             assinante_pre.fazerChamada(dataHora, duracao);
         }
 
-        if (assinante_pos != null) {
+        if (assinante_pos) {
             assinante_pos.fazerChamada(dataHora, duracao);
         }
 
-        scanner.close();
-
     }
 
-    public void fazerRecarga() 
-    {
-        Scanner scanner = new Scanner(System.in);
+    public void fazerRecarga() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         GregorianCalendar dataHora = new GregorianCalendar();
         PrePago assinante_pre = null;
@@ -110,24 +104,20 @@ public class Telefonia {
                 }
             } while(dataHora == null && valor <= 0);
 
-            assinante_pre.fazerRecarga(dataHora, valor);
+            assinante_pre.recarregar(dataHora, valor);
 
         } else {
             System.out.println("Assinante prepago Não localizado...\n");
         }
 
-        scanner.close();
     }
 
-    public void imprimirFaturas() 
-    {
-        Scanner scanner = new Scanner(System.in);
-        int mesSelected = 0;
-        EnumMeses mes = null;
+    public void imprimirFaturas() {
+        int mesSelecionado = null;
         boolean entradaValida = false;
-        do {
-            
+        EnumMeses mes = null;
 
+        do {
             System.out.println("Digite o nome do mes: ");
             String input = scanner.nextLine().toUpperCase();
 
@@ -137,23 +127,21 @@ public class Telefonia {
             } catch (IllegalArgumentException e) {
                 System.out.println("Valor inválido.\n");
             }
-        } while (!entradaValida && mes == null);
+        } while (!entradaValida || mes == null);
 
-        mesSelected = mes.ordinal();
+        mesSelecionado = mes.ordinal();
 
         System.out.println("\nFATURAS DE TODOS OS POSPAGOS...");
         for (PosPago pos: this.posPago) {
             if (pos == null) break;
-            pos.imprimirFaturas(mesSelected);
+            pos.imprimirFaturas(mesSelecionado);
         }
 
         System.out.println("\nFATURAS DE TODOS OS PREPAGOS...");
         for (PrePago pre: this.prePago) {
-            if (pre == null)   break;
-            pre.imprimirFaturas(mesSelected);
+            if (pre == null) break;
+            pre.imprimirFaturas(mesSelecionado);
         }
-
-        scanner.close();
 
     }
 
@@ -171,6 +159,7 @@ public class Telefonia {
         }
 
     public void sairDoPrograma() {
+        scanner.close();
         System.exit(1);
     }
 
@@ -186,7 +175,6 @@ public class Telefonia {
 
         return pre;
     }
-
 
     private PosPago localizarPosPago(long cpf) {
         PosPago pos = null;
