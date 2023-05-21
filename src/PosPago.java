@@ -12,21 +12,17 @@ public class PosPago extends Assinante
         this.assinatura = assinatura;
     }
 
-    public void fazerChamada(GregorianCalendar data, int duracao) 
-    {
-        if (this.numChamadas >= this.chamadas.length) 
-        {
+    public void fazerChamada(GregorianCalendar data, int duracao) {
+        if (this.numChamadas >= this.chamadas.length) {
             System.out.println("Assinante com limite de chamadas.");
             return;
         }
 
         this.chamadas[this.numChamadas] = new Chamada(data, duracao);
-        this.assinatura += (1.04) * duracao;
         this.numChamadas++;
     }
 
-    public void imprimirFaturas(int mes) 
-    {
+    public void imprimirFaturas(int mes) {
         float valorTotalChamdas = 0f;
         System.out.println("===============================");
 
@@ -36,15 +32,15 @@ public class PosPago extends Assinante
         System.out.print("\nChamadas...");
         for (int i = 0; i < this.numChamadas; i++) {
             if (mes == this.chamadas[i].getData().get(Calendar.MONTH)) {
+                custo = (float) (this.chamadas[i].getDuracao() * 1.04);
                 System.out.println("\n Chamada["+i+"]: " + this.chamadas[i].toString());
-                System.out.println("  valorChamada: " + this.chamadas[i].getDuracao() * 1.04);
-            } else {
-                System.out.println("  Nenhuma...");
+                System.out.println("  valorChamada: " + custo);
+                valorTotalChamdas += custo;
             }
         }
 
         System.out.println(" Total gasto em chamadas: " + valorTotalChamdas);
-        System.out.print("\n Valor final da assinatura: " +  this.assinatura);
+        System.out.print("\n Valor final da assinatura: " +  (this.assinatura + valorTotalChamdas));
 
         System.out.println("\n");
     }
