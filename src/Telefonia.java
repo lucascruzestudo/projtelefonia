@@ -48,7 +48,7 @@ public class Telefonia {
 
         if (assinante_pre == null && assinante_pos == null) {
             System.out.println("Assinante Não localizado...\n");
-            scanner.close()
+            scanner.close();
             return;
         }
 
@@ -76,7 +76,7 @@ public class Telefonia {
             assinante_pos.fazerChamada(dataHora, duracao);
         }
 
-        scanner.close()
+        scanner.close();
 
     }
 
@@ -116,28 +116,28 @@ public class Telefonia {
             System.out.println("Assinante prepago Não localizado...\n");
         }
 
-        scanner.close()
+        scanner.close();
     }
 
     public void imprimirFaturas() 
     {
         Scanner scanner = new Scanner(System.in);
-        int mesSelected = null;
-        EnumMonth mes = null;
-
+        int mesSelected = 0;
+        EnumMeses mes = null;
+        boolean entradaValida = false;
         do {
-            boolean entradaValida = false;
+            
 
             System.out.println("Digite o nome do mes: ");
             String input = scanner.nextLine().toUpperCase();
 
             try {
-                mes = EnumMonth.valueOf(input);
+                mes = EnumMeses.valueOf(input);
                 entradaValida = true;
             } catch (IllegalArgumentException e) {
                 System.out.println("Valor inválido.\n");
             }
-        } while (!entradaValida && !mes);
+        } while (!entradaValida && mes == null);
 
         mesSelected = mes.ordinal();
 
@@ -157,20 +157,52 @@ public class Telefonia {
 
     }
 
-    // A Fazer
-    public void listarAssinante() {}
+    public void listarAssinante() {
+        System.out.println("\nTODOS OS POSPAGOS...\n");
+        for (PosPago pos: this.posPago) {
+            if (pos == null) break;
+            System.out.println(pos.toString());
+        }
+        System.out.println("\nTODOS OS PREPAGOS..\n");
+        for (PrePago pre: this.prePago) {
+            if (pre == null) break;
+            System.out.println(pre.toString());
+        }
+        }
 
-    // A Fazer
-    public void sairDoPrograma() {}
+    public void sairDoPrograma() {
+        System.exit(1);
+    }
 
-    // A Fazer
-    private PrePago localizarPrePago(long cpf) {}
+    private PrePago localizarPrePago(long cpf) {
+        PrePago pre = null;
 
-    // A Fazer
-    private PosPago localizarPosPago(long cpf) {}
+        for (int i = 0; i < this.numPrePagos; i++) {
+            if (this.prePago[i].getCpf() == cpf) {
+                pre = this.prePago[i];
+                break;
+            }
+        }
+
+        return pre;
+    }
+
+
+    private PosPago localizarPosPago(long cpf) {
+        PosPago pos = null;
+
+        for (int i = 0; i < this.numPosPagos; i++) {
+            if (this.posPago[i].getCpf() == cpf) {
+                pos = this.posPago[i];
+                break;
+            }
+        }
+
+        return pos;
+    }
 
     public static void main(String[] args) {
-        System.out.println("Seja bem-vindo a Telefonia")
+        System.out.println("Seja bem-vindo a Telefonia");
         Menu menu = new Menu();
         menu.exibirMenu();
     }
