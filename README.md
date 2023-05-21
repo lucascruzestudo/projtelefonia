@@ -6,7 +6,7 @@
     [x] getCpf
     [x] toString
 
-[] PrePago
+[x] PrePago
     [X] PrePago
     [X] fazerChamada
     [X] fazerRecarga
@@ -32,7 +32,7 @@
 
 [x] EnumMeses
 
-[] Telefonia
+[x] Telefonia
     [X] cadastrarAssinante
     [x] fazerChamada
     [x] fazerRecarga
