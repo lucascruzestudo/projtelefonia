@@ -19,16 +19,74 @@ public class Telefonia {
         this.scanner = new Scanner(System.in)
     }
 
-    // Finalizar
     public void cadastrarAssinante() {
-        GerenciadorEntrada gerenciadorEntrada = GerenciadorEntrada.getInstancia();
-        EnumClassificacaoAssinantes tipoAssinante = gerenciadorEntrada.solicitarTipoAssinante();
+        EnumClassificacaoAssinantes tipoAssinante = null;
+        boolean se_pospago = false;
+        boolean se_prepago = false;
+        Long cpfAssinante = null;
+        int telefone = null;
+        String nome = null;
+        float assinatura = null;
+        boolean se_tipoAssinanteValido = false;
 
-        boolean is_pospago = tipoAssinante.equals(EnumClassificacaoAssinantes.POSPAGO);
-        boolean is_prepago = tipoAssinante.equals(EnumClassificacaoAssinantes.PREPAGO);
+        while (!se_tipoAssinanteValido) {
+            try {
+                System.out.println("Digite o tipo de assinante (PREPAGO ou POSPAGO): ");
+                String input = scanner.nextLine().toUpperCase();
 
-        // verificando o tipo de  assinante para posteriormente solicitar os dados de \n
-        //assinante específico 
+                tipoAssinante = EnumClassificacaoAssinantes.valueOf(input);
+                se_tipoAssinanteValido = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Valor inválido.\nDigite PREPAGO ou POSPAGO: ");
+                se_tipoAssinanteValido = false;
+            }
+        }
+
+        se_pospago = tipoAssinante.equals(EnumClassificacaoAssinantes.POSPAGO);
+        se_prepago = tipoAssinante.equals(EnumClassificacaoAssinantes.PREPAGO);
+
+        if (se_pospago && this.numPosPagos >= this.posPago.length) {
+            System.out.println("Limite de Assinanntes Pospagos");
+            return;
+        }
+
+        if (se_prepago && this.numPrePagos >= this.prePago.length) {
+            System.out.println("Limite de Assinanntes Pospagos");
+            return;
+        }
+
+        while (cpfAssinante == null) {
+            System.out.println("Digite o CPF do assinante: ");
+            cpfAssinante = scanner.nextLong();
+            PosPago assinante_pos = localizarPosPago(cpfAssinante);
+            PrePago assinante_pre = localizarPrePago(cpfAssinante);
+
+            if (assinante_pos == null && assinante_pre == null) {
+                break;
+            } else {
+                System.out.println("CPF já cadastrado!");
+                cpfAssinante = null;
+            }
+        }
+
+        System.out.println("Digite o nome do assinante: ");
+        nome = scanner.nextLine();
+        System.out.println("Digite o telefone do assinante: ");
+        telefone = scanner.nextLine();
+
+        if (se_pospago) {
+            System.out.println("Digite o valor da assinatura do Pospago: ");
+            assinatura = scanner.nextFloat();
+
+            this.posPago[this.numPosPagos] = new PosPago(cpfAssinante, nome, telefone, assinatura);
+            this.numPosPagos++;
+        }
+
+        if (se_prepago) {
+            this.prePago[this.numPrePagos] = new PrePago(cpfAssinante, nome, telefone);
+            this.numPrePagos++;
+        }
+
     }
 
     public void fazerChamada() {
