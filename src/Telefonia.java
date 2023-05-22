@@ -11,12 +11,11 @@ public class Telefonia {
     private PrePago[] prePago;
     private PosPago[] posPago;
 
-    private static Scanner scanner;
+    private static Scanner scanner = new Scanner(System.in);
 
     public Telefonia() {
         this.posPago = new PosPago[5];
         this.prePago = new PrePago[5];
-        this.scanner = new Scanner(System.in);
     }
 
     public void cadastrarAssinante() {
