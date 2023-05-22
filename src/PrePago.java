@@ -51,10 +51,10 @@ public class PrePago extends Assinante {
         for (int i = 0; i < this.numChamadas; i++) {
             if (mes == this.chamadas[i].getData().get(Calendar.MONTH)) {
                 if (!achouChamadaOrRecarga) {
-                    System.out.println("===============================");
                     System.out.print("\nChamadas...");
                     System.out.println("Dados Pessoais...");
                     System.out.println(this.toString());
+                    System.out.println("===============================");
                 }
                 System.out.println("\n Chamada["+i+"]: " + this.chamadas[i].toString());
                 float _valorTotalChamadas = (float)(this.chamadas[i].getDuracao() * 1.45);
@@ -69,10 +69,10 @@ public class PrePago extends Assinante {
         for (int i = 0; i < this.numRecargas; i++) {
             if (mes == this.recargas[i].getData().get(Calendar.MONTH)) {
                 if (!achouChamadaOrRecarga) {
-                    System.out.println("===============================");
                     System.out.print("\nRecarrega...");
                     System.out.println("Dados Pessoais...");
                     System.out.println(this.toString());
+                    System.out.println("===============================");
                 }
 
                 System.out.println("\n Recarga["+i+"]: " + this.recargas[i].toString());

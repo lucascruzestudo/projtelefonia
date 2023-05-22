@@ -30,9 +30,9 @@ public class PosPago extends Assinante
         for (int i = 0; i < this.numChamadas; i++) {
             if (mes == this.chamadas[i].getData().get(Calendar.MONTH)) {
                 if (!achouChamada) {
-                    System.out.println("===============================");
                     System.out.println("Dados Pessoais...");
                     System.out.println(this.toString());
+                    System.out.println("===============================");
                 }
 
                 float custo = (float) (this.chamadas[i].getDuracao() * 1.04);
