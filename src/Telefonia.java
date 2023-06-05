@@ -38,12 +38,12 @@ public class Telefonia {
 
             System.out.println("Digite a duracao da chamada em minutos: ");
             duracao = scanner.nextInt();
-            scanner.nextLine(); // Consume the remaining newline character
+            scanner.nextLine();
 
             try {
                 Date dataHoraDate = sdf.parse(dataHoraStr);
                 dataHora.setTime(dataHoraDate);
-                inputValid = true; // Set the flag to indicate valid input
+                inputValid = true;
             } catch (ParseException e) {
                 System.out.println("Data inválida");
             }
