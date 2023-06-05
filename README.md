@@ -45,3 +45,12 @@
    8. [X] localizarPosPago
    9. [x] main/Menu
 
+9. Polimorfismo de subtipos e sobreescrita
+    1. [x] Aplicar
+
+
+#### Opcional:
+
+10. Trabalhar com Coleções
+    1. [] Aplicar (ArrayList)
+    
