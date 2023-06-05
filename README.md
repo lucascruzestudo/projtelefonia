@@ -52,5 +52,5 @@
 #### Opcional:
 
 10. Trabalhar com Coleções
-    1. [] Aplicar (ArrayList)
+    1. [x] Aplicar (ArrayList)
     
