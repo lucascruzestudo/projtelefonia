@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -5,21 +6,21 @@ import java.util.GregorianCalendar;
 public class PrePago extends Assinante {
     private float creditos;
     private int numRecargas;
-    private Recarga[] recargas;
+    private ArrayList<Recarga> recargas;
 
       public PrePago(long cpf, String nome, int numero) {
         super(cpf, nome, numero);
-        this.recargas = new Recarga[5];
+        this.recargas = new ArrayList<>();
         this.creditos = 0f;
         this.numRecargas = 0;
     }
     
     public void recarregar(GregorianCalendar data, float valor) {
-        if (this.numRecargas >= this.recargas.length) {
+        if (this.recargas.size() > 15) {
             System.out.println("Assinante com limite de recarga.");
             return;
         }
-        this.recargas[this.numRecargas] = new Recarga(data, valor);
+        this.recargas.add(new Recarga(data, valor));
         this.creditos += valor;
         this.numRecargas++;
     }
@@ -27,7 +28,7 @@ public class PrePago extends Assinante {
     @Override
     public void fazerChamada(GregorianCalendar data, int duracao) {
 
-        if (this.numChamadas >= this.chamadas.length) {
+        if (this.chamadas.size() > 15) {
             System.out.println("Assinante com limite de chamadas.\n");
             return;
         }
@@ -39,7 +40,7 @@ public class PrePago extends Assinante {
             return;
         }
 
-        this.chamadas[this.numChamadas] = new Chamada(data, duracao);
+        this.chamadas.add(new Chamada(data, duracao));
         this.creditos -= (1.45 * duracao);
         this.numChamadas++;
     }
@@ -50,10 +51,10 @@ public class PrePago extends Assinante {
         float valorTotalRecargas = 0f;
         boolean achouChamadaOrRecarga = false;
 
-        System.out.printf("\nChamadas... de %d/%d", mes, ano);
-        
-        for (int i = 0; i < this.numChamadas; i++) {
-            GregorianCalendar dataCorrente = this.chamadas[i].getData();
+        System.out.printf("\nChamadas... de %d/%d\n", mes, ano);
+
+        for (int i = 0; i < this.chamadas.size(); i++) {
+            GregorianCalendar dataCorrente = this.chamadas.get(i).getData();
             if (mes == dataCorrente.get(Calendar.MONTH) && dataCorrente.get(Calendar.YEAR) == ano) {
                 if (!achouChamadaOrRecarga) {
                     System.out.println("Dados Pessoais...");
@@ -61,32 +62,35 @@ public class PrePago extends Assinante {
                     System.out.println("===============================");
                     achouChamadaOrRecarga = true;
                 }
-                System.out.println("\n Chamada["+i+"]: " + this.chamadas[i].toString());
-                float _valorTotalChamadas = (float)(this.chamadas[i].getDuracao() * 1.45);
+                System.out.println("\n Chamada[" + i + "]: " + this.chamadas.get(i).toString());
+                float _valorTotalChamadas = (float)(this.chamadas.get(i).getDuracao() * 1.45);
                 System.out.println(" Valor da chamada: " + _valorTotalChamadas);
                 valorTotalChamadas += _valorTotalChamadas;
             }
         }
 
-        if (achouChamadaOrRecarga) System.out.println("\n Total gasto em chamadas: " + valorTotalChamadas);
+        if (achouChamadaOrRecarga) {
+            System.out.println("\n Total gasto em chamadas: " + valorTotalChamadas);
+        }
 
         for (int i = 0; i < this.numRecargas; i++) {
-            GregorianCalendar dataCorrente = this.chamadas[i].getData();
+            GregorianCalendar dataCorrente = this.recargas.get(i).getData();
             if (mes == dataCorrente.get(Calendar.MONTH) && dataCorrente.get(Calendar.YEAR) == ano) {
                 if (!achouChamadaOrRecarga) {
                     System.out.println("===============================");
-                    System.out.print("\nRecarrega...");
+                    System.out.print("\nRecargas...");
                     System.out.println("Dados Pessoais...");
                     System.out.println(this.toString());
                     achouChamadaOrRecarga = true;
                 }
 
-                System.out.println("\n Recarga["+i+"]: " + this.recargas[i].toString());
-                valorTotalRecargas += this.recargas[i].getValor();
+                System.out.println("\n Recarga[" + i + "]: " + this.recargas.get(i).toString());
+                valorTotalRecargas += this.recargas.get(i).getValor();
             }
         }
 
-        if (achouChamadaOrRecarga) System.out.println("\n Total gasto em recarga: " + valorTotalRecargas+" \n");
-
+        if (achouChamadaOrRecarga) {
+            System.out.println("\n Total gasto em recargas: " + valorTotalRecargas + "\n");
+        }
     }
 }

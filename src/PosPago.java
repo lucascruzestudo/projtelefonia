@@ -13,24 +13,24 @@ public class PosPago extends Assinante
     }
     @Override
     public void fazerChamada(GregorianCalendar data, int duracao) {
-        if (this.numChamadas >= this.chamadas.length) {
+        if (this.chamadas.size() > 15) {
             System.out.println("Assinante com limite de chamadas.");
             return;
         }
 
-        this.chamadas[this.numChamadas] = new Chamada(data, duracao);
+        this.chamadas.add(new Chamada(data, duracao));
         this.numChamadas++;
     }
 
     @Override
     public void imprimirFaturas(int mes, int ano) {
-        float valorTotalChamdas = 0f;
+        float valorTotalChamadas = 0f;
         boolean achouChamada = false;
 
-        System.out.printf("\nChamadas... de %d/%d", mes, ano);
+        System.out.printf("\nChamadas... de %d/%d\n", mes, ano);
 
-        for (int i = 0; i < this.numChamadas; i++) {
-            GregorianCalendar dataCorrente = this.chamadas[i].getData();
+        for (int i = 0; i < this.chamadas.size(); i++) {
+            GregorianCalendar dataCorrente = this.chamadas.get(i).getData();
             if (mes == dataCorrente.get(Calendar.MONTH) && dataCorrente.get(Calendar.YEAR) == ano) {
                 if (!achouChamada) {
                     System.out.println("===============================");
@@ -39,17 +39,17 @@ public class PosPago extends Assinante
                     achouChamada = true;
                 }
 
-                float custo = (float) (this.chamadas[i].getDuracao() * 1.04);
-                System.out.println("\n Chamada["+i+"]: " + this.chamadas[i].toString());
+                float custo = (float) (this.chamadas.get(i).getDuracao() * 1.04);
+                System.out.println("\n Chamada[" + i + "]: " + this.chamadas.get(i).toString());
                 System.out.println(" valorChamada: " + custo);
-                valorTotalChamdas += custo;
+                valorTotalChamadas += custo;
             }
         }
 
         if (achouChamada) {
-            System.out.println(" Total gasto em chamadas: " + valorTotalChamdas);
+            System.out.println(" Total gasto em chamadas: " + valorTotalChamadas);
             System.out.println(" Valor da assinatura: " + this.assinatura);
-            System.out.print("\n Valor final da assinatura: " + (this.assinatura + valorTotalChamdas));
+            System.out.println("\n Valor final da assinatura: " + (this.assinatura + valorTotalChamadas));
         }
         System.out.println("\n");
     }

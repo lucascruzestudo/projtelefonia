@@ -31,21 +31,23 @@ public class Telefonia {
         GregorianCalendar dataHora = new GregorianCalendar();
         int duracao = 0;
 
+        boolean inputValid = false;
         do {
             System.out.println("Digite a data (formato dd/MM/yyyy HH:mm:ss): ");
             String dataHoraStr = scanner.nextLine();
 
             System.out.println("Digite a duracao da chamada em minutos: ");
             duracao = scanner.nextInt();
+            scanner.nextLine(); // Consume the remaining newline character
 
             try {
                 Date dataHoraDate = sdf.parse(dataHoraStr);
                 dataHora.setTime(dataHoraDate);
+                inputValid = true; // Set the flag to indicate valid input
             } catch (ParseException e) {
                 System.out.println("Data inválida");
-                dataHora = null;
             }
-        } while(dataHora == null || duracao < 1);
+        } while (!inputValid || duracao < 1);
 
         assinante.fazerChamada(dataHora, duracao);
     }
