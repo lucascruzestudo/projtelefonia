@@ -1,27 +1,24 @@
-import com.sun.source.tree.InstanceOfTree;
-
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 public class Telefonia {
-    private int numAssinantes;
-    private Assinante[] assinantes;
+    private ArrayList<Assinante> assinantes;
     private static Scanner scanner = new Scanner(System.in);
 
     public Telefonia() {
-        this.assinantes = new Assinante[15];
+        this.assinantes = new ArrayList<>();
     }
 
     public void cadastrarAssinante(Assinante assinante) {
-        if (this.numAssinantes >= this.assinantes.length) {
-            System.out.println("Chegou no limite de Assinanntes");
+        if (this.assinantes.size() >= 15) {
+            System.out.println("Chegou no limite de Assinantes");
             return;
         }
-        this.assinantes[this.numAssinantes] = assinante;
-        this.numAssinantes++;
+        this.assinantes.add(assinante);
     }
 
     public void fazerChamada(Assinante assinante) {
@@ -107,16 +104,15 @@ public class Telefonia {
         mesSelecionado = mes.ordinal();
 
         System.out.println("\nFATURAS DE TODOS OS Assinantes...");
-        for (int i = 0; i < this.numAssinantes; i++) {
-            assinantes[i].imprimirFaturas(mesSelecionado, inputAno);
+        for (Assinante assinante : this.assinantes) {
+            assinante.imprimirFaturas(mesSelecionado, inputAno);
         }
-
     }
 
     public void listarAssinante() {
         System.out.println("\nLista de Assinantes...\n");
-        for (int i = 0; i < this.numAssinantes; i++) {
-            System.out.println(assinantes[i].toString() + "\n");
+        for (Assinante assinante : this.assinantes) {
+            System.out.println(assinante.toString() + "\n");
         }
     }
 
@@ -126,17 +122,12 @@ public class Telefonia {
     }
 
     private Assinante localizarAssinante(Long cpf) {
-        Assinante assinante = null;
-
-        for (int i = 0; i < this.numAssinantes; i++) {
-            if (this.assinantes[i].getCpf() == cpf) {
-                assinante = this.assinantes[i];
-                break;
+        for (Assinante assinante : this.assinantes) {
+            if (assinante.getCpf() == cpf) {
+                return assinante;
             }
         }
-
-        return assinante;
-
+        return null;
     }
 
     public static void main(String[] args) {
@@ -161,99 +152,96 @@ public class Telefonia {
             scanner.nextLine();
 
             switch (opcao) {
-                case 1:
-                    {
-                        System.out.println("Cadastrar assinante...");
+                case 1: {
+                    System.out.println("Cadastrar assinante...");
 
-                        EnumClassificacaoAssinantes tipoAssinante = null;
-                        boolean se_pospago = false;
-                        boolean se_prepago = false;
-                        Long cpfAssinante = null;
-                        int telefone;
-                        String nome;
-                        float assinatura;
-                        boolean se_tipoAssinanteValido = false;
+                    EnumClassificacaoAssinantes tipoAssinante = null;
+                    boolean se_pospago = false;
+                    boolean se_prepago = false;
+                    Long cpfAssinante = null;
+                    int telefone;
+                    String nome;
+                    float assinatura;
+                    boolean se_tipoAssinanteValido = false;
 
-                        while (!se_tipoAssinanteValido) {
-                            try {
-                                System.out.println("Digite o tipo de assinante (PREPAGO ou POSPAGO): ");
-                                String input = scanner.nextLine().toUpperCase();
+                    while (!se_tipoAssinanteValido) {
+                        try {
+                            System.out.println("Digite o tipo de assinante (PREPAGO ou POSPAGO): ");
+                            String input = scanner.nextLine().toUpperCase();
 
-                                tipoAssinante = EnumClassificacaoAssinantes.valueOf(input);
-                                se_tipoAssinanteValido = true;
-                            } catch (IllegalArgumentException e) {
-                                System.out.println("Valor inválido.\nDigite PREPAGO ou POSPAGO: ");
-                                se_tipoAssinanteValido = false;
-                            }
-                        }
-
-                        se_pospago = tipoAssinante.equals(EnumClassificacaoAssinantes.POSPAGO);
-                        se_prepago = tipoAssinante.equals(EnumClassificacaoAssinantes.PREPAGO);
-
-                        while (cpfAssinante == null) {
-                            System.out.println("Digite o CPF do assinante: ");
-                            cpfAssinante = scanner.nextLong();
-                            scanner.nextLine();
-                            Assinante assinante = telefonia.localizarAssinante(cpfAssinante);
-
-                            if (assinante == null) {
-                                break;
-                            } else {
-                                System.out.println("CPF já cadastrado!");
-                                cpfAssinante = null;
-                            }
-                        }
-
-                        System.out.println("Digite o nome do assinante: ");
-                        nome = scanner.nextLine();
-                        System.out.println("Digite o telefone do assinante: ");
-                        telefone = scanner.nextInt();
-
-                        if (se_pospago) {
-                            System.out.println("Digite o valor da assinatura do Pospago: ");
-                            assinatura = scanner.nextFloat();
-
-                            telefonia.cadastrarAssinante(new PosPago(cpfAssinante, nome, telefone, assinatura));
-                        }
-
-                        if (se_prepago) {
-                            telefonia.cadastrarAssinante(new PrePago(cpfAssinante, nome, telefone));
+                            tipoAssinante = EnumClassificacaoAssinantes.valueOf(input);
+                            se_tipoAssinanteValido = true;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Valor inválido.\nDigite PREPAGO ou POSPAGO: ");
+                            se_tipoAssinanteValido = false;
                         }
                     }
+
+                    se_pospago = tipoAssinante.equals(EnumClassificacaoAssinantes.POSPAGO);
+                    se_prepago = tipoAssinante.equals(EnumClassificacaoAssinantes.PREPAGO);
+
+                    while (cpfAssinante == null) {
+                        System.out.println("Digite o CPF do assinante: ");
+                        cpfAssinante = scanner.nextLong();
+                        scanner.nextLine();
+                        Assinante assinante = telefonia.localizarAssinante(cpfAssinante);
+
+                        if (assinante == null) {
+                            break;
+                        } else {
+                            System.out.println("CPF já cadastrado!");
+                            cpfAssinante = null;
+                        }
+                    }
+
+                    System.out.println("Digite o nome do assinante: ");
+                    nome = scanner.nextLine();
+                    System.out.println("Digite o telefone do assinante: ");
+                    telefone = scanner.nextInt();
+
+                    if (se_pospago) {
+                        System.out.println("Digite o valor da assinatura do Pospago: ");
+                        assinatura = scanner.nextFloat();
+
+                        telefonia.cadastrarAssinante(new PosPago(cpfAssinante, nome, telefone, assinatura));
+                    }
+
+                    if (se_prepago) {
+                        telefonia.cadastrarAssinante(new PrePago(cpfAssinante, nome, telefone));
+                    }
                     break;
+                }
                 case 2:
                     System.out.println("Listar assinantes...");
                     telefonia.listarAssinante();
                     break;
-                case 3:
-                    {
-                        System.out.println("Fazer chamada...");
+                case 3: {
+                    System.out.println("Fazer chamada...");
 
-                        System.out.println("Digite o CPF do assinante: ");
-                        Long cpfAssinante = scanner.nextLong();
-                        scanner.nextLine();
-                        Assinante assinante = telefonia.localizarAssinante(cpfAssinante);
+                    System.out.println("Digite o CPF do assinante: ");
+                    Long cpfAssinante = scanner.nextLong();
+                    scanner.nextLine();
+                    Assinante assinante = telefonia.localizarAssinante(cpfAssinante);
 
-                        telefonia.fazerChamada(assinante);
+                    telefonia.fazerChamada(assinante);
+                    break;
+                }
+                case 4: {
+                    System.out.println("Fazer recarga...");
+
+                    System.out.println("Digite o CPF do assinante: ");
+                    Long cpfAssinante = scanner.nextLong();
+                    scanner.nextLine();
+
+                    Assinante assinante = telefonia.localizarAssinante(cpfAssinante);
+
+                    if (assinante != null && assinante instanceof PrePago) {
+                        telefonia.fazerRecarga((PrePago) assinante);
+                    } else {
+                        System.out.println("Assinante Não localizado...\n");
                     }
                     break;
-                case 4:
-                    {
-                        System.out.println("Fazer recarga...");
-
-                        System.out.println("Digite o CPF do assinante: ");
-                        Long cpfAssinante = scanner.nextLong();
-                        scanner.nextLine();
-
-                        Assinante assinante = telefonia.localizarAssinante(cpfAssinante);
-
-                        if (assinante != null && assinante instanceof PrePago) {
-                            telefonia.fazerRecarga((PrePago) assinante);
-                        } else {
-                            System.out.println("Assinante Não localizado...\n");
-                        }
-                    }
-                    break;
+                }
                 case 5:
                     System.out.println("Imprimir faturas...");
                     telefonia.imprimirFaturas();
@@ -267,7 +255,6 @@ public class Telefonia {
                     System.out.println("Opção inválida...");
             }
 
-        } while(opcao != 6);
+        } while (opcao != 6);
     }
-
 }
