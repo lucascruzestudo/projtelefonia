@@ -11,6 +11,7 @@ public class Telefonia {
     private static Scanner scanner = new Scanner(System.in);
 
     public Telefonia() {
+        this.numAssinante = 0;
         this.assinantes = new ArrayList<>();
     }
 
