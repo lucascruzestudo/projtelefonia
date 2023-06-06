@@ -13,10 +13,8 @@ public class PosPago extends Assinante
     }
     @Override
     public void fazerChamada(GregorianCalendar data, int duracao) {
-        if (this.chamadas.size() > 15) {
-            System.out.println("Assinante com limite de chamadas.");
-            return;
-        }
+   
+        
 
         this.chamadas.add(new Chamada(data, duracao));
         this.numChamadas++;

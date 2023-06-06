@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 public class Telefonia {
+    private int numAssinante; 
     private ArrayList<Assinante> assinantes;
     private static Scanner scanner = new Scanner(System.in);
 
@@ -19,6 +20,7 @@ public class Telefonia {
             return;
         }
         this.assinantes.add(assinante);
+        this.numAssinante++; 
     }
 
     public void fazerChamada(Assinante assinante) {
