@@ -16,10 +16,7 @@ public class PrePago extends Assinante {
     }
     
     public void recarregar(GregorianCalendar data, float valor) {
-        if (this.recargas.size() > 15) {
-            System.out.println("Assinante com limite de recarga.");
-            return;
-        }
+        
         this.recargas.add(new Recarga(data, valor));
         this.creditos += valor;
         this.numRecargas++;
@@ -27,11 +24,6 @@ public class PrePago extends Assinante {
 
     @Override
     public void fazerChamada(GregorianCalendar data, int duracao) {
-
-        if (this.chamadas.size() > 15) {
-            System.out.println("Assinante com limite de chamadas.\n");
-            return;
-        }
 
         if (this.creditos < (1.45 * duracao)) {
             System.out.println("Assinante nao possui creditos para completar a chamada.");
