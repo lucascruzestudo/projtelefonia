@@ -157,7 +157,7 @@ public class Telefonia {
 
             switch (opcao) {
                 case 1: {
-                    System.out.println("Cadastrar assinante...");
+                    System.out.println("Cadastrando assinante...");
 
                     EnumClassificacaoAssinantes tipoAssinante = null;
                     boolean se_pospago = false;
@@ -220,7 +220,7 @@ public class Telefonia {
                     telefonia.listarAssinante();
                     break;
                 case 3: {
-                    System.out.println("Fazer chamada...");
+                    System.out.println("Realizar chamada...");
 
                     System.out.println("Digite o CPF do assinante: ");
                     Long cpfAssinante = scanner.nextLong();
@@ -231,7 +231,7 @@ public class Telefonia {
                     break;
                 }
                 case 4: {
-                    System.out.println("Fazer recarga...");
+                    System.out.println("Realizar recarga...");
 
                     System.out.println("Digite o CPF do assinante: ");
                     Long cpfAssinante = scanner.nextLong();
@@ -251,12 +251,12 @@ public class Telefonia {
                     telefonia.imprimirFaturas();
                     break;
                 case 6:
-                    System.out.println("Sair do programa...");
+                    System.out.println("Sair do programa.");
                     telefonia.sairDoPrograma();
                     break;
                 default:
                     exibirOpcoes = false;
-                    System.out.println("Opção inválida...");
+                    System.out.println("Opção inválida.");
             }
 
         } while (opcao != 6);
